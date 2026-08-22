@@ -13,6 +13,15 @@ interface ChangelogEntry {
 const CHANGELOG: ChangelogEntry[] = [
   {
     date: "22 agosto 2026",
+    version: "1.16",
+    title: "«Ayúdame a elegir»: sorteo entre vuestros favoritos",
+    changes: [
+      { type: "new", text: "Nuevo botón «Ayúdame a elegir» en el ranking del grupo: abre un sorteo con ruleta y confeti que escoge por vosotros entre los juegos mejor valorados" },
+      { type: "new", text: "Si el sorteo no os convence, podéis repetirlo tantas veces como queráis; el juego elegido no se marca como jugado ni cambia nada del grupo" },
+    ],
+  },
+  {
+    date: "22 agosto 2026",
     version: "1.15.1",
     title: "Escribir en el móvil sin saltos de zoom",
     changes: [

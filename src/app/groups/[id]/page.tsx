@@ -13,6 +13,7 @@ import BggRating from "@/components/BggRating";
 import GameReviewModal from "@/components/GameReviewModal";
 import GroupGallery from "@/components/GroupGallery";
 import GroupPlayedGames from "@/components/GroupPlayedGames";
+import HelpMePickModal from "@/components/HelpMePickModal";
 import { formatDuration, formatRelativeShort } from "@/lib/format";
 import { getGroupType, type VoteOption } from "@/lib/groupTypes";
 
@@ -216,6 +217,9 @@ function GroupDashboardPage() {
   const [feedHasMore, setFeedHasMore] = useState(!!cachedFeed?.cursor);
   const [feedLoading, setFeedLoading] = useState(false);
   const [feedLoaded, setFeedLoaded] = useState(!!cachedFeed);
+
+  // Sorteo "Ayúdame a elegir" sobre el ranking
+  const [showRandomPicker, setShowRandomPicker] = useState(false);
 
   // Quick session from ranking
   const [quickSelectIds, setQuickSelectIds] = useState<Set<string>>(new Set());
@@ -1205,16 +1209,29 @@ function GroupDashboardPage() {
                               </button>
                             </div>
                           ) : (
-                            <Link
-                              href={`/groups/${groupId}/add-games${(() => {
-                                const firstBgg = group.members.find((m) => m.user.bggUsername)?.user.bggUsername;
-                                return firstBgg ? `?user=${encodeURIComponent(firstBgg)}` : "";
-                              })()}`}
-                              prefetch={false}
-                              className="px-4 py-2.5 bg-[var(--primary)] text-[var(--primary-text)] rounded-xl hover:bg-[var(--primary-hover)] text-sm font-semibold shrink-0 transition-all duration-200 shadow-sm hover:shadow-md"
-                            >
-                              Añadir juegos
-                            </Link>
+                            <div className="flex items-center gap-2 shrink-0">
+                              {pendingGames.length >= 2 && (
+                                <button
+                                  onClick={() => setShowRandomPicker(true)}
+                                  title="Ayúdame a elegir: sorteo entre los mejores del ranking"
+                                  aria-label="Ayúdame a elegir"
+                                  className="px-3 py-2.5 rounded-xl border border-[var(--primary)]/40 text-[var(--primary)] hover:bg-[var(--accent-soft)] text-sm font-semibold shrink-0 transition-all duration-200"
+                                >
+                                  🎯<span className="ml-1.5 sm:hidden">Elegir</span>
+                                  <span className="hidden sm:inline ml-1.5">Ayúdame a elegir</span>
+                                </button>
+                              )}
+                              <Link
+                                href={`/groups/${groupId}/add-games${(() => {
+                                  const firstBgg = group.members.find((m) => m.user.bggUsername)?.user.bggUsername;
+                                  return firstBgg ? `?user=${encodeURIComponent(firstBgg)}` : "";
+                                })()}`}
+                                prefetch={false}
+                                className="px-4 py-2.5 bg-[var(--primary)] text-[var(--primary-text)] rounded-xl hover:bg-[var(--primary-hover)] text-sm font-semibold shrink-0 transition-all duration-200 shadow-sm hover:shadow-md"
+                              >
+                                Añadir juegos
+                              </Link>
+                            </div>
                           )}
                         </div>
                       </div>
@@ -1669,6 +1686,11 @@ function GroupDashboardPage() {
                 </div>
               )}
             </div>
+          )}
+
+          {/* Sorteo aleatorio entre el top del ranking */}
+          {showRandomPicker && (
+            <HelpMePickModal games={pendingGames} onClose={() => setShowRandomPicker(false)} />
           )}
 
           {/* Quick session modal */}
