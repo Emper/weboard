@@ -220,3 +220,17 @@ summary:focus-visible {
 .no-scrollbar::-webkit-scrollbar {
   display: none;              /* Chrome, Safari */
 }
+
+/* ── Evitar el zoom automático de iOS al enfocar campos ────────── */
+/* Safari en iOS hace zoom in cuando enfocas un campo con font-size < 16px
+   y deja la vista acercada hasta que el usuario hace pinch out. Forzamos
+   16px en dispositivos táctiles para que no se dispare ese zoom.
+   Se excluyen los campos de solo lectura (enlaces de invitación, etc.),
+   que no abren teclado, y los controles sin texto. */
+@media (pointer: coarse) {
+  input:not([readonly]):not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="color"]):not([type="file"]):not([type="button"]):not([type="submit"]),
+  select,
+  textarea:not([readonly]) {
+    font-size: 16px;
+  }
+}

@@ -12,6 +12,14 @@ interface ChangelogEntry {
 
 const CHANGELOG: ChangelogEntry[] = [
   {
+    date: "22 agosto 2026",
+    version: "1.15.1",
+    title: "Escribir en el móvil sin saltos de zoom",
+    changes: [
+      { type: "fixed", text: "Al escribir un comentario en el ranking desde el móvil, la pantalla ya no se acerca sola y se queda así: ahora puedes escribir y seguir votando sin tener que ajustar la vista a mano" },
+    ],
+  },
+  {
     date: "12 agosto 2026",
     version: "1.15",
     title: "Fotos sueltas en la galería del grupo",
